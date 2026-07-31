@@ -9,8 +9,8 @@ apps/server/certs/
 *.key
 
 # ローカルのセーブデータ・学習ログ（子供の学習記録は個人情報として扱う）
-data/
-!data/.gitkeep
+/data/
+!/data/.gitkeep
 
 # 手書きサンプル（筆跡は個人情報。リポジトリに含めない）
 tools/eval/samples/
