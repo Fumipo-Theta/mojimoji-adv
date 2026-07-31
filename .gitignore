@@ -1,0 +1,25 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.DS_Store
+
+# ローカル証明書（絶対にコミットしない）
+apps/server/certs/
+*.pem
+*.key
+
+# ローカルのセーブデータ・学習ログ（子供の学習記録は個人情報として扱う）
+data/
+!data/.gitkeep
+
+# 手書きサンプル（筆跡は個人情報。リポジトリに含めない）
+tools/eval/samples/
+
+# 学習済みモデル重み（ライセンス確認前は配布しない）
+packages/recognition/models/*.bin
+packages/recognition/models/*.json
+!packages/recognition/models/.gitkeep
+
+# Playwright
+test-results/
+playwright-report/

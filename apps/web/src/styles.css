@@ -1,0 +1,573 @@
+/*
+ * 子供向けの前提でスタイルを決めている:
+ * - タップ対象は最低 44px 角（指で押せる）
+ * - 文字は大きく、ふりがな不要の平易な語だけを使う
+ * - 属性の色は図鑑・バトル・パレットで共通（色で属性を覚えられる）
+ */
+
+:root {
+  --bg: #101a2b;
+  --panel: #1b2942;
+  --panel-2: #243554;
+  --text: #f2f6ff;
+  --muted: #9fb0d0;
+  --accent: #ffd166;
+  --ok: #5fd68b;
+  --ng: #ff8f7a;
+
+  --el-ひかり: #ffe27a;
+  --el-ほのお: #ff7a59;
+  --el-みず: #5bc0ff;
+  --el-つち: #c9a06a;
+  --el-くさ: #7ddb8a;
+  --el-かぜ: #a5e5d8;
+  --el-やみ: #a98cff;
+  --el-でんき: #ffd93d;
+  --el-こおり: #b8e6ff;
+  --el-ほし: #ff9fd6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Hiragino Maru Gothic ProN', 'Yu Gothic', system-ui, sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  border-radius: 12px;
+  min-height: 44px;
+  padding: 8px 14px;
+  background: var(--panel-2);
+  color: var(--text);
+  font-size: 16px;
+}
+
+button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+button.primary {
+  background: var(--accent);
+  color: #2a1e00;
+  font-weight: 700;
+}
+
+.screen {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* --- ナビ --- */
+.topnav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.topnav h1 {
+  font-size: 20px;
+  margin: 0;
+  flex: 1;
+}
+
+.topnav-tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.topnav-tabs .active {
+  background: var(--accent);
+  color: #2a1e00;
+  font-weight: 700;
+}
+
+.room-invite {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--panel);
+  border-radius: 12px;
+  padding: 8px 12px;
+}
+
+.room-code {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  color: var(--accent);
+}
+
+.room-hint {
+  font-size: 12px;
+  color: var(--muted);
+  display: flex;
+  flex-direction: column;
+}
+
+.room-hint code {
+  font-size: 11px;
+  word-break: break-all;
+}
+
+/* --- バトル --- */
+.stage {
+  background: var(--panel);
+  border-radius: 20px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stage-enemy,
+.stage-player {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.enemy-name {
+  font-size: 18px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 180px;
+}
+
+.player-label {
+  min-width: 60px;
+  font-weight: 700;
+}
+
+.element-chip {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  color: #10141f;
+  font-weight: 700;
+}
+
+.hpbar {
+  position: relative;
+  flex: 1;
+  height: 22px;
+  background: #0d1424;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.hpbar-fill {
+  height: 100%;
+  transition: width 260ms ease-out;
+}
+
+.hpbar-enemy {
+  background: linear-gradient(90deg, #ff7a59, #ffb36b);
+}
+
+.hpbar-player {
+  background: linear-gradient(90deg, #5fd68b, #9fe8bb);
+}
+
+.hpbar-label {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.stage-arena {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 180px;
+}
+
+.enemy-body {
+  fill: #7a86a8;
+}
+
+/* 属性ごとの色。図鑑・パレットと共通のトークンを使う */
+.element-ひかり { fill: var(--el-ひかり); background: var(--el-ひかり); }
+.element-ほのお { fill: var(--el-ほのお); background: var(--el-ほのお); }
+.element-みず { fill: var(--el-みず); background: var(--el-みず); }
+.element-つち { fill: var(--el-つち); background: var(--el-つち); }
+.element-くさ { fill: var(--el-くさ); background: var(--el-くさ); }
+.element-かぜ { fill: var(--el-かぜ); background: var(--el-かぜ); }
+.element-やみ { fill: var(--el-やみ); background: var(--el-やみ); }
+.element-でんき { fill: var(--el-でんき); background: var(--el-でんき); }
+.element-こおり { fill: var(--el-こおり); background: var(--el-こおり); }
+.element-ほし { fill: var(--el-ほし); background: var(--el-ほし); }
+
+.enemy-hurt {
+  animation: shake 320ms ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-10px) rotate(-4deg); }
+  60% { transform: translateX(10px) rotate(4deg); }
+}
+
+.damage-pop {
+  position: absolute;
+  top: 10px;
+  font-size: 44px;
+  font-weight: 900;
+  color: var(--accent);
+  text-shadow: 0 3px 0 #7a5300;
+  animation: pop 900ms ease-out forwards;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.damage-crit {
+  color: #fff;
+  text-shadow: 0 0 18px #ff8f7a;
+}
+
+.crit-tag {
+  font-size: 14px;
+  color: var(--ng);
+}
+
+@keyframes pop {
+  0% { transform: scale(0.5) translateY(20px); opacity: 0; }
+  30% { transform: scale(1.2) translateY(0); opacity: 1; }
+  100% { transform: scale(1) translateY(-30px); opacity: 0; }
+}
+
+.enemy-attack-flash {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 143, 122, 0.35);
+  border-radius: 16px;
+  animation: flash 700ms ease-out;
+}
+
+@keyframes flash {
+  0% { opacity: 0; }
+  25% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.stage-prompt {
+  text-align: center;
+}
+
+.prompt-text {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+
+.prompt-text.win { color: var(--accent); }
+.prompt-text.lose { color: var(--ng); }
+
+.outcome {
+  margin: 0;
+  font-size: 16px;
+  color: var(--muted);
+}
+
+.outcome-hit { color: var(--ok); }
+.outcome-unreadable,
+.outcome-blank { color: var(--accent); }
+.outcome-wrong-char,
+.outcome-sealed { color: var(--ng); }
+
+.timer {
+  color: var(--accent);
+  font-weight: 700;
+  margin: 6px 0 0;
+}
+
+.stage-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.enemy-picker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.enemy-picker .active {
+  background: var(--accent);
+  color: #2a1e00;
+  font-weight: 700;
+}
+
+.clear-mark {
+  color: var(--accent);
+  margin-left: 4px;
+}
+
+.enemy-picker .active .clear-mark {
+  color: #2a1e00;
+}
+
+/* --- スキャナ / パレット --- */
+.scanner {
+  background: var(--panel);
+  border-radius: 20px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.scanner-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.room-chip {
+  background: var(--panel-2);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.conn {
+  font-size: 13px;
+}
+
+.conn-ok { color: var(--ok); }
+.conn-ng { color: var(--ng); }
+
+.scanner-header h2 {
+  font-size: 20px;
+  margin: 0 0 6px;
+}
+
+.scanner-feedback {
+  margin: 0;
+  font-size: 16px;
+}
+
+.scanner-feedback.ok { color: var(--ok); }
+.scanner-feedback.ng { color: var(--ng); }
+
+.scanner-mode-note {
+  background: #2c2413;
+  border: 1px solid #6b5a2a;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 12px;
+  color: #ffe9b0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.scanner-loading {
+  color: var(--muted);
+}
+
+.palette {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.palette-slots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.slot {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  border: 2px dashed #46577c;
+  display: grid;
+  place-items: center;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.slot-filled {
+  border-style: solid;
+  border-color: var(--accent);
+  background: #2b3450;
+}
+
+.slot-clear {
+  font-size: 13px;
+  min-height: 36px;
+}
+
+.palette-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.palette-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.row-label {
+  min-width: 82px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #10141f;
+  border-radius: 8px;
+  padding: 4px 6px;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.row-label em {
+  font-style: normal;
+  font-size: 10px;
+  opacity: 0.8;
+}
+
+.kana {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  font-size: 26px;
+  font-weight: 700;
+  padding: 0;
+  background: var(--panel-2);
+}
+
+.kana-known {
+  background: #35507a;
+}
+
+.kana-sealed {
+  background: #4a2030;
+  text-decoration: line-through;
+}
+
+.kana-count {
+  position: absolute;
+  right: 3px;
+  bottom: 2px;
+  font-size: 10px;
+  color: var(--accent);
+}
+
+/* --- 図鑑 --- */
+.zukan h2 {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.zukan-count {
+  font-size: 14px;
+  color: var(--accent);
+}
+
+.zukan-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.zukan-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.zukan-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.zukan-group-label {
+  font-size: 10px;
+  color: var(--muted);
+  min-width: 72px;
+  text-align: right;
+}
+
+.zukan-cells {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.zukan-cell {
+  width: 48px;
+  height: 56px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: #16203a;
+  border: 2px solid transparent;
+}
+
+.zukan-cell.known {
+  background: var(--panel-2);
+}
+
+.zukan-cell.locked {
+  opacity: 0.35;
+}
+
+/* レアリティを枠色で示す。ひらがな→濁音→カタカナ→単語→漢字 */
+.rarity-1 { border-color: #4a5b80; }
+.rarity-2 { border-color: #7ddb8a; }
+.rarity-3 { border-color: #5bc0ff; }
+.rarity-4 { border-color: #a98cff; }
+.rarity-5 { border-color: var(--accent); }
+
+.zukan-char {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.zukan-level {
+  font-size: 10px;
+  color: var(--accent);
+}
+
+/* --- スマホ --- */
+@media (max-width: 640px) {
+  .screen { padding: 10px; gap: 10px; }
+  .kana { width: 46px; height: 46px; font-size: 22px; }
+  .row-label { min-width: 64px; }
+  .topnav h1 { font-size: 16px; }
+}
