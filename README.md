@@ -8,17 +8,33 @@
 ## いまできること
 
 | | 状態 |
-|---|---|
+| --- | --- |
 | バトル 1 本の通しプレイ | ✅ 動く |
 | モジモン図鑑（五十音表）・育成・進化解放 | ✅ 動く |
 | 1 台モード / 2 台モード | ✅ 両方動く |
-| **手書き文字の認識** | ⏳ **ダミー実装**（画面の五十音表から文字を選ぶ）|
+| **手書き文字の認識** | ⏳ **ダミー実装**（画面の五十音表から文字を選ぶ） |
 | カメラ・用紙検出 | ⏳ 未実装（M3） |
 
 認識部分は `CharRecognizer` / `SheetDetector` というインターフェース越しにしか使われていないので、
 実装を差し替えてもゲーム側のコードは変わらない。詳細は [docs/architecture.md](docs/architecture.md)。
 
 ## はじめかた
+
+Node.js のインストール (ツール管理に [`mise`](https://mise.jdx.dev/getting-started.html) を用いる):
+
+```bash
+# mise を未インストールの場合
+curl https://mise.run | sh
+# ~/.bash_profile or ~/.bash_login or ~/.profile
+echo 'eval "$(mise activate bash --shims)"' >> ~/.bash_profile
+source ~/.bash_profile
+# ~/.zprofile
+echo 'eval "$(mise activate zsh --shims)"' >> ~/.zprofile
+source ~/.zprofile
+
+# ツールインストール
+mise install
+```
 
 ```bash
 npm install
@@ -46,7 +62,7 @@ npm run dev
 ## コマンド
 
 | コマンド | 内容 |
-|---|---|
+| --- | --- |
 | `npm run dev` | API サーバーと Vite dev サーバーを同時起動 |
 | `npm run build` | 全ワークスペースをビルド |
 | `npm test` | ユニット・契約テスト（Vitest） |
